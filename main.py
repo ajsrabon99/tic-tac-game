@@ -1,17 +1,50 @@
 import tkinter as tk
 from tkinter import messagebox
 import random  # For AI to choose moves
+import pygame
+
+# Initialize the mixer
+pygame.mixer.init()
+
+def play_sound(file_path):
+    """Plays a short sound effect."""
+    effect = pygame.mixer.Sound(file_path)
+    effect.play()
+
+def start_background_music(file_path):
+    """Starts the background music, looping indefinitely."""
+    pygame.mixer.music.load(file_path)
+    pygame.mixer.music.play(loops=-1)  # Loop indefinitely
+
+def stop_background_music():
+    """Stops the background music."""
+    pygame.mixer.music.stop()
 
 def start_game():
+    """Handles the start game action."""
+    sound_path = "click_sound.mp3"
+    background_music_path = "background_music.mp3"
+    print(f"Playing sound: {sound_path}")
+    play_sound(sound_path)
+
+    # Start background music (only once)
+    print(f"Starting background music: {background_music_path}")
+    start_background_music(background_music_path)
+
     start_button.grid_remove()
     logo_label.grid_remove()  # Hide the logo after starting the game
-    
+
     # Show the game mode options
     play_with_ai_button.grid(row=2, column=0, columnspan=3, pady=(10, 10))
     play_with_friends_button.grid(row=3, column=0, columnspan=3, pady=(10, 10))
     privacy_button.grid(row=4, column=0, columnspan=3, pady=10)  # Show Privacy button here
 
 def select_mode(mode):
+    """Handles selecting the game mode."""
+    sound_path = "click_sound.mp3"
+    print(f"Playing sound: {sound_path}")
+    play_sound(sound_path)
+
     global ai_mode
     ai_mode = (mode == "AI")
     
@@ -31,6 +64,11 @@ def select_mode(mode):
     toggle_player()  # Start the game
 
 def back_to_mode_selection():
+    """Resets the game to the mode selection screen."""
+    sound_path = "click_sound.mp3"
+    print(f"Playing sound: {sound_path}")
+    play_sound(sound_path)
+
     # Reset the game board
     restart_game()
     
@@ -47,6 +85,7 @@ def back_to_mode_selection():
     privacy_button.grid(row=4, column=0, columnspan=3, pady=10)
 
 def check_winner():
+    """Checks for a winner."""
     global winner
     for combo in [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]]:
         if buttons[combo[0]]["text"] == buttons[combo[1]]["text"] == buttons[combo[2]]["text"] != "":
@@ -60,12 +99,18 @@ def check_winner():
     return False  
 
 def check_tie():
+    """Checks for a tie."""
     if all(button["text"] != "" for button in buttons):
         if not check_winner():  
             messagebox.showinfo("Tic-Tac-Toe", "Match Draw!")
             show_end_buttons()  # Show Restart and Back buttons
 
 def button_click(index):
+    """Handles clicking on a button."""
+    sound_path = "click_sound.mp3"
+    print(f"Playing sound: {sound_path}")
+    play_sound(sound_path)
+
     if buttons[index]["text"] == "" and not winner:
         buttons[index]["text"] = current_player
         if current_player == "X":
@@ -79,6 +124,7 @@ def button_click(index):
                 ai_move()
 
 def ai_move():
+    """Handles AI's move."""
     empty_indices = [i for i, button in enumerate(buttons) if button["text"] == ""]
     if empty_indices:
         ai_choice = random.choice(empty_indices)  # Choose a random empty spot
@@ -88,10 +134,12 @@ def ai_move():
             check_tie()
             toggle_player()
 
-def toggle_player():  
+def toggle_player():
+    """Toggles the current player."""
     global current_player
     current_player = "X" if current_player == "O" else "O"
     label.config(text=f"Player {current_player}'s turn")
+
 
 def show_privacy_policy():
     privacy_policy_text = """AJ Srabon built the Tic-Tac-Toe game as a Free game. This SERVICE is provided by AJ Srabon at no cost and is intended for use as is.
@@ -103,6 +151,14 @@ def show_end_buttons():
     back_button.grid(row=8, column=0, columnspan=3, pady=10)  # Show Back button
 
 def restart_game():
+    sound_path = "click_sound.mp3"
+    print(f"Playing sound: {sound_path}")
+    play_sound(sound_path)
+    background_music_path = "background_music.mp3"
+    print(f"Playing sound: {sound_path}")
+    play_sound(sound_path)
+    
+
     global current_player, winner
     current_player = "X"
     winner = False
@@ -117,6 +173,16 @@ def restart_game():
     back_button.grid_remove()
 
 def exit_game():
+    sound_path = "click_sound.mp3"
+    print(f"Playing sound: {sound_path}")
+    play_sound(sound_path)
+    background_music_path = "background_music.mp3"
+    print(f"Playing sound: {sound_path}")
+    play_sound(sound_path)
+    
+    # Start background music
+    print(f"Starting background music: {background_music_path}")
+    start_background_music(background_music_path)
     root.quit()
 
 root = tk.Tk()
