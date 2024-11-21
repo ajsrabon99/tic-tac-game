@@ -20,6 +20,19 @@ def stop_background_music():
     """Stops the background music."""
     pygame.mixer.music.stop()
 
+def play_winning_celebration():
+    """Play a joyful sound and show a winning message."""
+    # Play a joyful sound
+    celebration_sound_path = "winning_celebration.mp3"
+    print(f"Playing sound: {celebration_sound_path}")
+    play_sound(celebration_sound_path)
+    
+    # Change background color to indicate celebration
+    root.config(bg="gold")  # Change background to gold (or any color you like)
+    
+    # Show a celebration message
+    messagebox.showinfo("Congratulations!", f"Player {current_player} wins!\nCelebrate!")
+    
 def start_game():
     """Handles the start game action."""
     sound_path = "click_sound.mp3"
@@ -93,7 +106,7 @@ def check_winner():
             buttons[combo[1]].config(bg="honeydew2")
             buttons[combo[2]].config(bg="honeydew2")
             winner = True
-            messagebox.showinfo("Tic-Tac-Toe", f"Player {buttons[combo[0]]['text']} wins!")
+            play_winning_celebration()  # Play the winning celebration
             show_end_buttons()  # Show Restart and Back buttons
             return True  
     return False  
@@ -158,11 +171,13 @@ def restart_game():
     print(f"Playing sound: {sound_path}")
     play_sound(sound_path)
     
-
     global current_player, winner
     current_player = "X"
     winner = False
     label.config(text=f"Player {current_player}'s turn")
+    
+    # Reset the background color to its original color
+    root.config(bg="#B8860B")  # Reset the background color to the original
     
     # Reset all buttons
     for button in buttons:
@@ -171,6 +186,8 @@ def restart_game():
     # Hide the Restart and Back buttons
     restart_button.grid_remove()
     back_button.grid_remove()
+
+
 
 def exit_game():
     sound_path = "click_sound.mp3"
@@ -190,7 +207,7 @@ root.title("Tic-Tac-Toe")
 root.geometry("600x600")  # Set the window size
 root.config(bg="#B8860B")
 
-# Load logo image
+
 logo_image = tk.PhotoImage(file="game_logo.png")
 
 center_frame = tk.Frame(root, bg="#B8860B")
